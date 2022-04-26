@@ -2,6 +2,11 @@ import { Box, Button, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { userClearError, userLogin } from '../../store/actions/user-action';
+import { useNavigate } from 'react-router-dom';
+import { useRedirectLogUser } from '../../hooks/redirect-hook';
 
 const loginSchema = yup.object({
     login: yup.string().trim().required(),
@@ -10,6 +15,13 @@ const loginSchema = yup.object({
 
 
 const LoginPage = () => {
+    useRedirectLogUser();
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(userClearError);
+    }, []);
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             login: '',
@@ -19,12 +31,9 @@ const LoginPage = () => {
         reValidateMode: 'onSubmit'
     });
 
-    const onSubmit = (data) => {
-        //TODO Ajax request !
-        alert(JSON.stringify(data));
+    const onSubmit = ({ login, password }) => {
+        dispatch(userLogin({ identifier: login, password }));
     };
-
-
 
     return (
         <>

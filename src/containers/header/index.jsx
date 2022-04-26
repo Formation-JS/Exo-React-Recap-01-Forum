@@ -2,8 +2,13 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import HomeIcon from '@mui/icons-material/Home';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogout } from '../../store/actions/user-action';
 
 const Header = () => {
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+
     return (
         <header>
             <AppBar position='static'>
@@ -27,8 +32,16 @@ const Header = () => {
                             About
                         </Typography>
                     </Box>
-                    <Button color='inherit' component={NavLink} to='/register'>Register</Button>
-                    <Button color='inherit' component={NavLink} to='/login'>Login</Button>
+                    {
+                        !user.token ? (<>
+                            <Button color='inherit' component={NavLink} to='/register'>Register</Button>
+                            <Button color='inherit' component={NavLink} to='/login'>Login</Button>
+                        </>) : (
+                            <Button color='inherit' component='div' onClick={() => {
+                                dispatch(userLogout());
+                            }}>Logout</Button>
+                        )
+                    }
                 </Toolbar>
             </AppBar>
         </header>

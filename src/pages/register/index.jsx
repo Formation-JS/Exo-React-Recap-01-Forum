@@ -1,8 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import { useRedirectLogUser } from '../../hooks/redirect-hook';
+import { userRegister } from '../../store/actions/user-action';
 
 const registerSchema = yup.object({
     pseudo: yup.string().trim().required(),
@@ -12,6 +17,10 @@ const registerSchema = yup.object({
 }).required();
 
 const RegisterPage = () => {
+    useRedirectLogUser();
+
+    const dispatch = useDispatch();
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             pseudo: '',
@@ -23,9 +32,8 @@ const RegisterPage = () => {
         reValidateMode: 'onSubmit'
     });
 
-    const onSubmit = (data) => {
-        //TODO Ajax request !
-        console.log(JSON.stringify(data));
+    const onSubmit = ({ pseudo, email, password }) => {
+        dispatch(userRegister({ pseudo, email, password }));
     };
 
     return (<>
