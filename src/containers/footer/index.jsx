@@ -1,8 +1,10 @@
+import { Box } from '@mui/material';
+
 const Footer = () => {
     return (
-        <footer>
+        <Box component='footer' textAlign='center'>
             <p>Bruxelles formation © All rights reserved</p>
-        </footer>
+        </Box>
     );
 };
 

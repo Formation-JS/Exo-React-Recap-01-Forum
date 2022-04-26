@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -27,10 +27,11 @@ const RegisterPage = () => {
         //TODO Ajax request !
         console.log(JSON.stringify(data));
     };
+
     return (<>
         <h1>Register</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Box gap='20px' display='flex' flexDirection='column'  >
+            <Stack gap='20px'>
                 <Controller
                     render={({ field }) =>
                         <TextField
@@ -89,7 +90,7 @@ const RegisterPage = () => {
                 <Box alignSelf='flex-start'>
                     <Button variant='contained' type='submit' >Envoyer</Button>
                 </Box>
-            </Box>
+            </Stack>
         </form>
     </>);
 };
