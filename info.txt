@@ -1,0 +1,16 @@
+Créer une app React (avec Redux et React-Router) basé sur l'API forum :
+
+Packages : 
+ - MUI
+ - React-Hook-Form
+ - Redux + Redux-ToolKit + React-Redux
+ - React-Router-Dom
+ - Axios
+
+Pages : 
+ - Accueil
+ - Sujets
+     ○ Voir un Sujet
+     ○ Créer un sujet
+ - A propos
+ - Login / Register
