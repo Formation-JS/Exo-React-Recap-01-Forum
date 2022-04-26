@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { Controller, useForm } from 'react-hook-form';
-import * as yup from "yup";
+import * as yup from 'yup';
 
 const registerSchema = yup.object({
     pseudo: yup.string().trim().required(),
@@ -30,7 +30,7 @@ const RegisterPage = () => {
     return (<>
         <h1>Register</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Box gap='20px' display="flex" flexDirection='column'  >
+            <Box gap='20px' display='flex' flexDirection='column'  >
                 <Controller
                     render={({ field }) =>
                         <TextField
@@ -40,9 +40,9 @@ const RegisterPage = () => {
                             {...field}
                         />
                     }
-                    name="pseudo"
+                    name='pseudo'
                     control={control}
-                    defaultValue=""
+                    defaultValue=''
 
                 />
                 <Controller
@@ -54,9 +54,9 @@ const RegisterPage = () => {
                             {...field}
                         />
                     }
-                    name="email"
+                    name='email'
                     control={control}
-                    defaultValue=""
+                    defaultValue=''
 
                 />
                 <Controller
@@ -65,12 +65,12 @@ const RegisterPage = () => {
                             error={errors.password}
                             fullWidth
                             label='Password'
-                            type="password"
+                            type='password'
                             {...field} />
                     }
-                    name="password"
+                    name='password'
                     control={control}
-                    defaultValue=""
+                    defaultValue=''
                 />
                 <Controller
                     render={({ field }) =>
@@ -78,16 +78,16 @@ const RegisterPage = () => {
                             error={errors.passwordConfirm}
                             fullWidth
                             label='Confirmation'
-                            type="password"
+                            type='password'
                             {...field} />
                     }
-                    name="passwordConfirm"
+                    name='passwordConfirm'
                     control={control}
-                    defaultValue=""
+                    defaultValue=''
                 />
 
                 <Box alignSelf='flex-start'>
-                    <Button variant="contained" type='submit' >Envoyer</Button>
+                    <Button variant='contained' type='submit' >Envoyer</Button>
                 </Box>
             </Box>
         </form>

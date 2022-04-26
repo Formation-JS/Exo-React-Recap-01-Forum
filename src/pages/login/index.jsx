@@ -1,7 +1,7 @@
 import { Box, Button, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
+import * as yup from 'yup';
 
 const loginSchema = yup.object({
     login: yup.string().trim().required(),
@@ -30,7 +30,7 @@ const LoginPage = () => {
         <>
             <h1>Login</h1>
             <form onSubmit={handleSubmit(onSubmit)} >
-                <Box gap='20px' display="flex" flexDirection='column'  >
+                <Box gap='20px' display='flex' flexDirection='column'  >
                     <Controller
                         render={({ field }) =>
                             <TextField
@@ -40,9 +40,9 @@ const LoginPage = () => {
                                 {...field}
                             />
                         }
-                        name="login"
+                        name='login'
                         control={control}
-                        defaultValue=""
+                        defaultValue=''
 
                     />
 
@@ -52,18 +52,18 @@ const LoginPage = () => {
                                 error={errors.password}
                                 fullWidth
                                 label='Password'
-                                type="password"
+                                type='password'
                                 {...field} />
                         }
-                        name="password"
+                        name='password'
                         control={control}
-                        defaultValue=""
+                        defaultValue=''
 
 
                     />
 
                     <Box alignSelf='flex-start'>
-                        <Button variant="contained" type='submit' >Envoyer</Button>
+                        <Button variant='contained' type='submit' >Envoyer</Button>
                     </Box>
                 </Box>
 
