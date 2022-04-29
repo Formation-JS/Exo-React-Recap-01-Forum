@@ -1,29 +1,22 @@
 import { createAction } from '@reduxjs/toolkit';
-import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import { requestUserLogin, requestUserRegister } from '../../api/user-api';
 
-export const userToken = createAction('user/token', ({ token, expire }) => {
+export const userSetToken = createAction('user/token', ({ token, expire }) => {
     const { pseudo, isAdmin } = jwtDecode(token);
     return {
-        payload: {
-            token,
-            expire,
-            pseudo,
-            isAdmin
-        }
+        payload: { token, expire, pseudo, isAdmin }
     };
 });
-
 export const userLogout = createAction('user/logout');
-
 export const userSendError = createAction('user/sendError');
 export const userClearError = createAction('user/clearRrror');
 
 export const userLogin = ({ identifier, password }) => {
     return (dispatch) => {
-        axios.post('http://localhost:8080/api/auth/login', { identifier, password })
-            .then(({ data }) => {
-                dispatch(userToken(data));
+        requestUserLogin({ identifier, password })
+            .then((data) => {
+                dispatch(userSetToken(data));
             }).catch(() => {
                 dispatch(userSendError());
             });
@@ -31,12 +24,13 @@ export const userLogin = ({ identifier, password }) => {
 };
 
 export const userRegister = ({ pseudo, email, password }) => {
-    return (dispatch) => {
-        axios.post('http://localhost:8080/api/auth/register', { pseudo, email, password })
-            .then(({ data }) => {
-                dispatch(userToken(data));
-            }).catch(() => {
-                dispatch(userSendError());
-            });;
+    return async (dispatch) => {
+        try {
+            const data = await requestUserRegister({ pseudo, email, password });
+            dispatch(userSetToken(data));
+        }
+        catch {
+            dispatch(userSendError());
+        }
     };
 };
