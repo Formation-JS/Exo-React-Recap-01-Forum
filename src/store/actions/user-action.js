@@ -15,10 +15,10 @@ export const userClearError = createAction('user/clearRrror');
 export const userLogin = ({ identifier, password }) => {
     return (dispatch) => {
         requestUserLogin({ identifier, password })
-            .then((data) => {
+            .then(({ data }) => {
                 dispatch(userSetToken(data));
-            }).catch(() => {
-                dispatch(userSendError());
+            }).catch((error) => {
+                dispatch(userSendError(error));
             });
     };
 };
@@ -29,8 +29,8 @@ export const userRegister = ({ pseudo, email, password }) => {
             const data = await requestUserRegister({ pseudo, email, password });
             dispatch(userSetToken(data));
         }
-        catch {
-            dispatch(userSendError());
+        catch (error) {
+            dispatch(userSendError(error));
         }
     };
 };

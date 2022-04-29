@@ -2,11 +2,11 @@ import { Box, Button, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { userClearError, userLogin } from '../../store/actions/user-action';
-import { useNavigate } from 'react-router-dom';
 import { useRedirectLogUser } from '../../hooks/redirect-hook';
+import AuthError from '../../containers/auth-error';
 
 const loginSchema = yup.object({
     login: yup.string().trim().required(),
@@ -19,7 +19,7 @@ const LoginPage = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(userClearError);
+        dispatch(userClearError());
     }, []);
 
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -52,7 +52,6 @@ const LoginPage = () => {
                         name='login'
                         control={control}
                         defaultValue=''
-
                     />
 
                     <Controller
@@ -67,17 +66,13 @@ const LoginPage = () => {
                         name='password'
                         control={control}
                         defaultValue=''
-
-
                     />
 
+                    <AuthError />
                     <Box alignSelf='flex-start'>
                         <Button variant='contained' type='submit' >Envoyer</Button>
                     </Box>
                 </Box>
-
-
-
             </form>
         </>
 

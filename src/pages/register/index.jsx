@@ -3,11 +3,11 @@ import { Button, Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
+import AuthError from '../../containers/auth-error';
 import { useRedirectLogUser } from '../../hooks/redirect-hook';
-import { userRegister } from '../../store/actions/user-action';
+import { userClearError, userRegister } from '../../store/actions/user-action';
 
 const registerSchema = yup.object({
     pseudo: yup.string().trim().required(),
@@ -20,6 +20,9 @@ const RegisterPage = () => {
     useRedirectLogUser();
 
     const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(userClearError());
+    }, []);
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
@@ -95,6 +98,7 @@ const RegisterPage = () => {
                     defaultValue=''
                 />
 
+                <AuthError />
                 <Box alignSelf='flex-start'>
                     <Button variant='contained' type='submit' >Envoyer</Button>
                 </Box>

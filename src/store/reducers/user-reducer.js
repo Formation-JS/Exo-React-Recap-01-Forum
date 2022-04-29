@@ -6,7 +6,7 @@ const initialState = {
     expire: null,
     pseudo: null,
     isAdmin: null,
-    error: false
+    error: null
 };
 
 const userReducer = createReducer(initialState, (builder) => {
@@ -25,13 +25,13 @@ const userReducer = createReducer(initialState, (builder) => {
         .addCase(userSendError.type, (state, action) => {
             return {
                 ...state,
-                error: true
+                error: action.payload
             };
         })
         .addCase(userClearError.type, (state, action) => {
             return {
                 ...state,
-                error: false
+                error: null
             };
         });
     // .addDefaultCase((state) => {
