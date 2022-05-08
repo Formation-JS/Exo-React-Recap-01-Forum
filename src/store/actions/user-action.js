@@ -10,12 +10,12 @@ export const userSetToken = createAction('user/token', ({ token, expire }) => {
 });
 export const userLogout = createAction('user/logout');
 export const userSendError = createAction('user/sendError');
-export const userClearError = createAction('user/clearRrror');
+export const userClearError = createAction('user/clearError');
 
 export const userLogin = ({ identifier, password }) => {
     return (dispatch) => {
         requestUserLogin({ identifier, password })
-            .then(({ data }) => {
+            .then((data) => {
                 dispatch(userSetToken(data));
             }).catch((error) => {
                 dispatch(userSendError(error));
