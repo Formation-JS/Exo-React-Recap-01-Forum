@@ -1,9 +1,5 @@
 import axios from 'axios';
-
-const errorMapper = (error) => ({
-    code: error.response?.data?.status ?? error.response?.status ?? 500,
-    msg: error.response?.data?.message ?? error.message
-});
+import { errorMapper } from './_mapper';
 
 export const requestUserLogin = ({ identifier, password }) => {
     const urlLogin = process.env.REACT_APP_API_FORUM + '/auth/login';
