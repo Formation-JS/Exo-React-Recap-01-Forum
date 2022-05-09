@@ -97,7 +97,7 @@ const subjectReducer = createReducer(initialState, (builder) => {
                         ...state.detail.data,
                         messages: {
                             data: [action.payload, ...state.detail.data.messages.data],
-                            count: state.detail.data.messages.clount +1
+                            count: state.detail.data.messages.count + 1
                         }
                     }
                 }
