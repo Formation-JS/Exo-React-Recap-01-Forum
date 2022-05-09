@@ -11,7 +11,10 @@ export const requestSubjectGetList = () => {
 
     return getAxios()
         .get(url, { offset, limit })
-        .then(({ data }) => data)
+        .then((response) => ({
+            count: response.data.count,
+            data: response.data.results
+        }))
         .catch((error) => {
             throw errorMapper(error);
         });
@@ -22,7 +25,7 @@ export const requestSubjectGetById = ({ subjectId }) => {
     
     return getAxios()
         .get(url)
-        .then(({ data }) => data)
+        .then((response) => (response.data.result))
         .catch((error) => {
             throw errorMapper(error);
         });
@@ -33,7 +36,7 @@ export const requestSubjectCreate = ({ userToken, name, content, categories }) =
 
     return getAxios(userToken)
         .post(url, { name, content, categories })
-        .then(({ data }) => data)
+        .then((response) => (response.data.result))
         .catch((error) => {
             throw errorMapper(error);
         });
@@ -46,7 +49,10 @@ export const requestSubjectGetMessage = ({ subjectId }) => {
 
     return getAxios()
         .get(url, { offset, limit })
-        .then(({ data }) => data)
+        .then((response) => ({
+            count: response.data.count,
+            data: response.data.results
+        }))
         .catch((error) => {
             throw errorMapper(error);
         });
@@ -57,7 +63,7 @@ export const requestSubjectAddMessage = ({ userToken, subjectId, content }) => {
 
     return getAxios(userToken)
         .post(url, { content })
-        .then(({ data }) => data)
+        .then((response) => (response.data.result))
         .catch((error) => {
             throw errorMapper(error);
         });
