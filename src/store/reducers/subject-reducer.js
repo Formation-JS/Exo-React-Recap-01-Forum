@@ -48,7 +48,8 @@ const subjectReducer = createReducer(initialState, (builder) => {
             ...state,
             list: {
                 data: [...state.list.data, action.payload],
-                count: state.list.count + 1
+                count: state.list.count + 1,
+                error: null
             }
         }))
         .addCase(subjectCreate.rejected, (state, action) => ({
@@ -98,14 +99,27 @@ const subjectReducer = createReducer(initialState, (builder) => {
                         messages: {
                             data: [action.payload, ...state.detail.data.messages.data],
                             count: state.detail.data.messages.count + 1
-                        }
+                        },
+                        error: null
                     }
                 }
             };
         })
         .addCase(subjectAddMessage.rejected, (state, action) => {
-            // TODO Handled the error
-            return state;
+            if (!state.detail) {
+                return state;
+            }
+
+            return {
+                ...state,
+                detail: {
+                    ...state.detail,
+                    data: {
+                        ...state.detail.data,
+                        error: action.error.message
+                    }
+                }
+            };
         });
 });
 
