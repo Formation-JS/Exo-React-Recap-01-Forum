@@ -10,9 +10,16 @@ const SubjectPage = () => {
 
         <h3>(DEV) Test Redux</h3>
         <button onClick={() => dispatch(subjectFetchList())}>Load All Subject</button>
-        <button onClick={() => dispatch(subjectCreate('Test Redux', 'Ceci est un test!', [1]))}>Create new Subject</button>
+        <button onClick={() => dispatch(subjectCreate({
+            name: 'Test Redux',
+            content: 'Ceci est un test!',
+            categories: [1]
+        }))}>Create new Subject</button>
         <button onClick={() => dispatch(subjectFetchDetail(1))}>Detail Subject 1</button>
-        <button onClick={() => dispatch(subjectAddMessage(1, 'Redux'))}>Add message</button>
+        <button onClick={() => dispatch(subjectAddMessage({
+            subjectId: 1,
+            content: 'Redux'
+        }))}>Add message</button>
     </>);
 };
 

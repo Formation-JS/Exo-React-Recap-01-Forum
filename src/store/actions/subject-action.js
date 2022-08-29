@@ -1,90 +1,55 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { requestSubjectAddMessage, requestSubjectCreate, requestSubjectGetById, requestSubjectGetList, requestSubjectGetMessage } from '../../api/subject-api';
 
 
-export const subjectListLoading = createAction('subject/listloading');
-export const subjectListResult = createAction('subject/listResult');
-export const subjectListError = createAction('subject/listError');
+export const subjectFetchList = createAsyncThunk(
+    'subject/list',
+    async () => {
+        const result = await requestSubjectGetList();
+        return result;
+    }
+);
 
-export const subjectDetailLoading = createAction('subject/detailloading');
-export const subjectDetailResult = createAction('subject/detailResult');
-export const subjectDetailError = createAction('subject/detailError');
+export const subjectFetchDetail = createAsyncThunk(
+    'subject/detail',
+    async (subjectId, { getState }) => {
+        let subject;
 
-export const subjectCreateSuccess = createAction('subject/createSuccess');
-export const subjectCreateError = createAction('subject/createError');
+        // Check if data exists in store
+        const storeSubject = getState().subject.list.data.find(s => s.id === subjectId);
 
-export const subjectAddMessageSuccess = createAction('subject/addMessageSuccess');
-export const subjectAddMessageError = createAction('subject/addMessageError');
-
-
-export const subjectFetchList = () => {
-    return (dispatch) => {
-        dispatch(subjectListLoading());
-
-        requestSubjectGetList()
-            .then(result => {
-                dispatch(subjectListResult(result));
-            })
-            .catch((error) => {
-                dispatch(subjectListError(error?.message));
-            });
-    };
-};
-
-export const subjectFetchDetail = (subjectId) => {
-    return async (dispatch, getState) => {
-        dispatch(subjectDetailLoading());
-
-        try {
-            let subject;
-
-            // Check if data exists in store
-            const storeSubject = getState().subject.list.data.find(s => s.id === subjectId);
-
-            if (storeSubject) {
-                // Si les données dans le store sont présente, on clone l'objet
-                subject = { ...storeSubject };
-            }
-            else {
-                // Load data by request API
-                subject = await requestSubjectGetById({ subjectId });
-            }
-
-            // Add message of subject
-            subject.messages = await requestSubjectGetMessage({ subjectId: subject.id });
-
-            dispatch(subjectDetailResult(subject));
+        if (storeSubject) {
+            // Si les données dans le store sont présente, on clone l'objet
+            subject = { ...storeSubject };
         }
-        catch (error) {
-            dispatch(subjectDetailError(error?.message));
+        else {
+            // Load data by request API
+            subject = await requestSubjectGetById({ subjectId });
         }
-    };
-};
 
-export const subjectCreate = (name, content, categories) => {
-    return (dispatch, getState) => {
+        // Add message of subject
+        subject.messages = await requestSubjectGetMessage({ subjectId: subject.id });
+
+        return subject;
+    }
+);
+
+export const subjectCreate = createAsyncThunk(
+    'subject/create',
+    async ({ name, content, categories }, { getState }) => {
         const userToken = getState().user.token;
 
-        requestSubjectCreate({ userToken, name, content, categories })
-            .then(result => {
-                dispatch(subjectCreateSuccess(result));
-            })
-            .catch((error) => {
-                dispatch(subjectCreateError(error?.message));
-            });
-    };
-};
+        const result = await requestSubjectCreate({ userToken, name, content, categories });
+        return result;
+    }
+);
 
-export const subjectAddMessage = (subjectId, content) => {
-    return (dispatch, getState) => {
+export const subjectAddMessage = createAsyncThunk(
+    'subject/addMessage',
+    async ({ subjectId, content }, { getState }) => {
         const userToken = getState().user.token;
 
-        requestSubjectAddMessage({ userToken, subjectId, content })
-            .then(result => {
-                dispatch(subjectAddMessageSuccess(result));
-            })
-            .catch((error) => {
-                dispatch(subjectAddMessageError(error?.message));
-            });
-    };
-};
+        const result = await requestSubjectAddMessage({ userToken, subjectId, content });
+        return result;
+    }
+);

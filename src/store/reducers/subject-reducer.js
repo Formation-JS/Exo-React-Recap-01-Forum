@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { subjectAddMessageError, subjectAddMessageSuccess, subjectCreateError, subjectCreateSuccess, subjectDetailError, subjectDetailLoading, subjectDetailResult, subjectListError, subjectListLoading, subjectListResult } from '../actions/subject-action';
+import { subjectAddMessage, subjectCreate, subjectFetchDetail, subjectFetchList } from '../actions/subject-action';
 
 const initialState = {
     list: {
@@ -18,7 +18,7 @@ const initialState = {
 const subjectReducer = createReducer(initialState, (builder) => {
     builder
         // fetch list
-        .addCase(subjectListLoading.type, (state, action) => ({
+        .addCase(subjectFetchList.pending, (state, action) => ({
             ...state,
             list: {
                 ...state.list,
@@ -26,7 +26,7 @@ const subjectReducer = createReducer(initialState, (builder) => {
                 error: null
             }
         }))
-        .addCase(subjectListResult.type, (state, action) => ({
+        .addCase(subjectFetchList.fulfilled, (state, action) => ({
             ...state,
             list: {
                 ...state.list,
@@ -35,31 +35,31 @@ const subjectReducer = createReducer(initialState, (builder) => {
                 data: action.payload.data   // TODO Dynamic data with pagination
             }
         }))
-        .addCase(subjectListError.type, (state, action) => ({
+        .addCase(subjectFetchList.rejected, (state, action) => ({
             ...state,
             list: {
                 ...state.list,
                 loading: false,
-                error: action.payload
+                error: action.error.message
             }
         }))
         // create subject
-        .addCase(subjectCreateSuccess.type, (state, action) => ({
+        .addCase(subjectCreate.fulfilled, (state, action) => ({
             ...state,
             list: {
                 data: [...state.list.data, action.payload],
                 count: state.list.count + 1
             }
         }))
-        .addCase(subjectCreateError.type, (state, action) => ({
+        .addCase(subjectCreate.rejected, (state, action) => ({
             ...state,
             list: {
                 ...state.list,
-                error: action.payload
+                error: action.error.message
             }
         }))
         // fetch detail
-        .addCase(subjectDetailLoading.type, (state, action) => ({
+        .addCase(subjectFetchDetail.pending, (state, action) => ({
             ...state,
             detail: {
                 loading: true,
@@ -67,7 +67,7 @@ const subjectReducer = createReducer(initialState, (builder) => {
                 error: null
             }
         }))
-        .addCase(subjectDetailResult.type, (state, action) => ({
+        .addCase(subjectFetchDetail.fulfilled, (state, action) => ({
             ...state,
             detail: {
                 ...state.detail,
@@ -75,16 +75,16 @@ const subjectReducer = createReducer(initialState, (builder) => {
                 data: action.payload,
             }
         }))
-        .addCase(subjectDetailError.type, (state, action) => ({
+        .addCase(subjectFetchDetail.rejected, (state, action) => ({
             ...state,
             detail: {
                 ...state.detail,
                 loading: false,
-                error: action.payload
+                error: action.error.message
             }
         }))
         // add message
-        .addCase(subjectAddMessageSuccess.type, (state, action) => {
+        .addCase(subjectAddMessage.fulfilled, (state, action) => {
             if (!state.detail) {
                 return state;
             }
@@ -103,7 +103,7 @@ const subjectReducer = createReducer(initialState, (builder) => {
                 }
             };
         })
-        .addCase(subjectAddMessageError.type, (state, action) => {
+        .addCase(subjectAddMessage.rejected, (state, action) => {
             // TODO Handled the error
             return state;
         });
